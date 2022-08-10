@@ -9,18 +9,27 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.example.shoppinglist.R
 import com.example.shoppinglist.databinding.ActivityMainBinding
+import javax.inject.Inject
 
 class MainActivity : AppCompatActivity(), ShopItemFragment.OnEditingFinishListener {
 
     private lateinit var binding: ActivityMainBinding
 
+    @Inject
+    lateinit var viewModelFactory: ViewModelFactory
+
     private val viewModel: MainViewModel by lazy {
-        ViewModelProvider(this)[MainViewModel::class.java]
+        ViewModelProvider(this, viewModelFactory)[MainViewModel::class.java]
+    }
+
+    private val component by lazy {
+        (application as ShopApp).component
     }
 
     private lateinit var adapter: ShopListAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        component.inject(this)
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -29,7 +38,7 @@ class MainActivity : AppCompatActivity(), ShopItemFragment.OnEditingFinishListen
             adapter.submitList(it)
         }
         binding.buttonAddShopItem.setOnClickListener {
-            if (isOnePaneMode()){
+            if (isOnePaneMode()) {
                 val intent = ShopItemActivity.newIntentAddItem(this)
                 startActivity(intent)
             } else {
@@ -43,7 +52,7 @@ class MainActivity : AppCompatActivity(), ShopItemFragment.OnEditingFinishListen
         supportFragmentManager.popBackStack()
     }
 
-    private fun isOnePaneMode() : Boolean {
+    private fun isOnePaneMode(): Boolean {
         return binding.shopItemContainer == null
     }
 
@@ -95,7 +104,7 @@ class MainActivity : AppCompatActivity(), ShopItemFragment.OnEditingFinishListen
 
     private fun setupClickListener() {
         adapter.onShopItemClickListener = {
-            if (isOnePaneMode()){
+            if (isOnePaneMode()) {
                 val intent = ShopItemActivity.newIntentEditItem(this, it.id)
                 startActivity(intent)
             } else {

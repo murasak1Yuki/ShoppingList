@@ -16,7 +16,7 @@ class ShopItemActivity : AppCompatActivity(), ShopItemFragment.OnEditingFinishLi
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_shop_item)
         parseIntent()
-        if (savedInstanceState == null){
+        if (savedInstanceState == null) {
             launchRightMode()
         }
     }
