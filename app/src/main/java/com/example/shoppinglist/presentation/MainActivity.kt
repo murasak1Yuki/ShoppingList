@@ -118,6 +118,4 @@ class MainActivity : AppCompatActivity(), ShopItemFragment.OnEditingFinishListen
             viewModel.changeEnableState(it)
         }
     }
-
-
 }
